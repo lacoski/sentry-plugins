@@ -13,11 +13,18 @@ Run migrations after installation is complete
 
 Asana
 -----
-You'll have to create an application in Asana to get a client ID and secret. Use the following for the redirect URL::
+You'll have to create an application in Asana to get a client ID and secret.
+Login to Asana. Go to `https://app.asana.com/-/account_api`. Click `Manage Developer Apps`.
+<Image>
+Click `Register New Application`.
+
+Create your application and use the following for the redirect URL::
 
     <URL_TO_SENTRY>/account/settings/social/associate/complete/asana/
 
-Ensure you've configured Asana auth in Sentry::
+<Image>
+
+Edit your `.sentry/sentry.conf.py` and add your Asana auth::
 
     ASANA_CLIENT_ID = 'Asana Client ID'
     ASANA_CLIENT_SECRET = 'Asana Client Secret'
@@ -29,7 +36,7 @@ You'll have to create an application in GitHub to get the app ID and API secret.
 
     <URL_TO_SENTRY>/account/settings/social/associate/complete/github/
 
-Ensure you've configured GitHub auth in Sentry::
+Configured GitHub auth in `.sentry/sentry.conf.py`::
 
     GITHUB_APP_ID = 'GitHub Application Client ID'
     GITHUB_API_SECRET = 'GitHub Application Client Secret'
@@ -103,7 +110,7 @@ You'll have to `create an application in Visual Studio <https://app.vsaex.visual
 - Project and Team (read) -- ``vso.project``
 - Releases (read) -- ``vso.release``
 
-Add the configured application credentials to your Sentry config:
+Add the configured application credentials to your Sentry config (`.sentry/sentry.conf.py`):
 
 .. code-block:: python
 
@@ -115,13 +122,6 @@ Add the configured application credentials to your Sentry config:
 Development
 ~~~~~~~~~~~
 
-Create a tunnel to localhost using something like https://ngrok.com/download::
-
-    ngrok http 8000
-
-Start Sentry with the following parameters set::
-
-    AC_BASE_URL=https://<xxx>.ngrok.io HTTPS=on sentry devserver
 
 
 JIRA (Atlassian Connect UI Plugin)
@@ -132,8 +132,19 @@ Enable the plugin by adding it in the Add-on Management page in JIRA.
 Development
 ~~~~~~~~~~~
 
-Use https://ngrok.com to expose your local Sentry to the internet. Update your config.yml to use your ngrok url::
-
-    system.url-prefix: 'https://<xxx>.ngrok.io'
+Follow the steps in the "Development with Ngrok".
 
 From the manage add-on page in JIRA, choose 'Upload add-on' and copy the URL for the descriptor view.
+
+Development with Ngrok
+-----------------------
+
+Use https://ngrok.com to expose your local Sentry to the internet.
+
+Start Sentry with the following parameters set::
+
+    AC_BASE_URL=https://<xxx>.ngrok.io HTTPS=on sentry devserver
+
+Or Update your `.sentry/config.yml` to use your ngrok url::
+
+    system.url-prefix: 'https://<xxx>.ngrok.io'
