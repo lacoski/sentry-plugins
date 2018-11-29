@@ -1,7 +1,6 @@
 from __future__ import absolute_import
 
 from sentry.plugins.bases.notify import NotifyPlugin
-from sentry_plugins.exceptions import ApiError
 from sentry.utils.http import absolute_uri
 
 from sentry_plugins.base import CorePluginMixin
