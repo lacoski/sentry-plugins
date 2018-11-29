@@ -1,6 +1,7 @@
 from __future__ import absolute_import
 
 from sentry.plugins.bases.notify import NotifyPlugin
+from sentry_plugins.exceptions import ApiError
 from sentry.utils.http import absolute_uri
 
 from sentry_plugins.base import CorePluginMixin
@@ -74,17 +75,20 @@ class PagerDutyPlugin(CorePluginMixin, NotifyPlugin):
                 break
 
         client = PagerDutyClient(service_key=service_key)
-        response = client.trigger_incident(
-            description=description,
-            event_type='trigger',
-            incident_key=group.id,
-            details=details,
-            contexts=[
-                {
-                    'type': 'link',
-                    'href': absolute_uri(group.get_absolute_url(params={'referrer': 'pagerduty_plugin'})),
-                    'text': 'Issue Details',
-                }
-            ],
-        )
-        assert response['status'] == 'success'
+        try:
+            response = client.trigger_incident(
+                description=description,
+                event_type='trigger',
+                incident_key=group.id,
+                details=details,
+                contexts=[
+                    {
+                        'type': 'link',
+                        'href': absolute_uri(group.get_absolute_url(params={'referrer': 'pagerduty_plugin'})),
+                        'text': 'Issue Details',
+                    }
+                ],
+            )
+            assert response['status'] == 'success'
+        except Exception as e:
+            self.raise_error(e)
